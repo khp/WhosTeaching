@@ -5,7 +5,11 @@ angular.module('whosTeachingAtUbcApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
-    }];
+    },
+      {
+        'title': 'Options',
+        'link': '/options'
+      }];
 
     $scope.isCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;

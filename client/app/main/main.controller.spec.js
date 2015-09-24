@@ -6,6 +6,7 @@ describe('Controller: MainCtrl', function () {
   beforeEach(module('whosTeachingAtUbcApp'));
 
   var MainCtrl,
+      TypeaheadCtrl,
       scope,
       $httpBackend;
 
@@ -17,6 +18,9 @@ describe('Controller: MainCtrl', function () {
 
     scope = $rootScope.$new();
     MainCtrl = $controller('MainCtrl', {
+      $scope: scope
+    });
+    TypeaheadCtrl = $controller('TypeaheadCtrl', {
       $scope: scope
     });
   }));

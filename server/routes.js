@@ -7,10 +7,13 @@
 var errors = require('./components/errors');
 var path = require('path');
 var subject = require('./api/subject/subject.controller.js');
+var course = require('./api/course/course.controller.js');
 
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/sections', require('./api/section'));
+  app.use('/api/courses', require('./api/course'))
   app.use('/api/subjects', require('./api/subject'));
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));

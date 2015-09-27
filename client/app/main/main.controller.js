@@ -44,9 +44,10 @@ angular.module('whosTeachingAtUbcApp')
     //  });
     //};
     $scope.subjects = [];
-    $scope.courses = [];
+    $scope.courses;
+    $scope.shortCourses;
     $scope.getSubjects = function(val) {
-      return $http.get('/api/subjects/json'
+      return $http.get('/api/subjects/search'
         , {
         params: {
           subject: val
@@ -60,16 +61,16 @@ angular.module('whosTeachingAtUbcApp')
     };
 
     $scope.getCourses = function(val) {
-      return $http.get('/api/courses'
+      return $http.get('/api/courses/search'
         , {
           params: {
-            query: val
+            course: val
           }
         }
         ).then(function(response) {
             console.log(response);
             $scope.courses = response.data;
-            return response.data;
+            return response.data.slice(0,10);
         });
     };
   });

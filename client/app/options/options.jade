@@ -1,0 +1,11 @@
+div(ng-include='"components/navbar/navbar.html"')
+
+.container
+  .h2 Options
+    small
+      i  - to be in admin panel
+.container
+  button(class='btn btn-default', type='button', ng-click='getSubjects()') Get Subjects
+  button(class='btn btn-default', type='button', ng-click='getCourses()') Get Courses (CPSC)
+  button(class='btn btn-default', type='button', ng-click='updateCourses()') Update Courses
+  button(class='btn btn-default', type='button', ng-click='updateSections()') Update Sections

@@ -10,9 +10,9 @@ header#banner.hero-unit
   div.spacer
   div.form-horizontal
     div.form-group
-      label.col-sm-2.control-label(for='subjectSearch') Search:
+      label.col-sm-2.control-label(for='courseSearch') Search:
       div.col-xs-4
-        input.form-control(type="text" id='subjectSearch' ng-model="asyncSelected" placeholer="locations loaded via $http" typeahead="address for address in getSubjects($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults")
+        input.form-control(type="text" id='courseSearch' ng-model="asyncSelected" placeholer="locations loaded via $http" typeahead="address for address in getCourses($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults")
   i(ng-show="loadingLocations" class="glyphicon glyphicon-refresh")
   div(ng-show="noResults")
     i(class="glyphicon glyphicon-remove")

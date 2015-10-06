@@ -33,6 +33,22 @@ angular.module('whosTeachingAtUbcApp')
           console.log('error');
         });
     };
+    $scope.updateSectionsWithProfs = function(req, res) {
+      $http.post('/api/subjects/updateSectionsWithProfs').
+        then(function(res) {
+          console.log('success');
+        }, function(res) {
+          console.log('error');
+        });
+    };
+    $scope.getAllProfessors = function(req, res) {
+      $http.post('/api/professors/getAllProfessors').
+        then(function(res) {
+          console.log('success');
+        }, function(res) {
+          console.log('error');
+        });
+    }
   }]);
 
 

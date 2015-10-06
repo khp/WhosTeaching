@@ -29,6 +29,11 @@ exports.updateSections = function(req, res) {
   return res.status(202).send();
 }
 
+exports.updateSectionsWithProfs = function(req, res) {
+  indexCourses.updateAllSectionsWithProfs();
+  return res.status(202).send();
+}
+
 exports.search = function(req, res) {
   var search = req.query.subject;
   console.log(search);

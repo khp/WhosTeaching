@@ -12,6 +12,7 @@ var course = require('./api/course/course.controller.js');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/professors', require('./api/professor'));
   app.use('/api/sections', require('./api/section'));
   app.use('/api/courses', require('./api/course'))
   app.use('/api/subjects', require('./api/subject'));

@@ -6,6 +6,8 @@
  * Created by khp on 27/08/15.
  */
 
+'use strict';
+
 
 var request = require('request'),
   cheerio = require('cheerio'),
@@ -171,6 +173,20 @@ exports.updateAllCoursesWithSections = function() {
   })
 }
 
+exports.updateAllSectionsWithProfs = function () {
+  console.log('asdfasdf')
+  Section.find({}, function(err, sections) {
+    sections.forEach(function (elem, index, array) {
+      // update each elem with instructor and maybe other data
+      console.log(elem);
+    })
+  });
+
+  function updateSection(subjectCode, courseNumber, sectionCode) {
+    var urlSection = 'https://courses.students.ubc.ca/cs/main?pname=subjarea&tname=subjareas&req=5&dept=' + subjectCode + '&course=' + courseNumber +'&section=' + sectionCode;
+  
+  }
+}
 
 
 exports.getSubjects = function() {

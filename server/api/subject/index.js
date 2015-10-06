@@ -17,5 +17,6 @@ router.post('/getSubjects', controller.getSubjects);
 router.post('/getCourses', controller.getCourses);
 router.post('/updateCourses', controller.updateCourses);
 router.post('/updateSections', controller.updateSections);
+router.post('/updateSectionsWithProfs', controller.updateSectionsWithProfs);
 
 module.exports = router;

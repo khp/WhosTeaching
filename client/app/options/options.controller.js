@@ -49,6 +49,14 @@ angular.module('whosTeachingAtUbcApp')
           console.log('error');
         });
     }
+    $scope.getProfsForSections = function(req, res) {
+      $http.post('/api/subjects/getProfsForSections').
+        then(function(res) {
+          console.log('success');
+        }, function(res) {
+          console.log('error');
+        });
+    }
   }]);
 
 

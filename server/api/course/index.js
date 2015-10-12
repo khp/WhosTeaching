@@ -6,8 +6,8 @@ var controller = require('./course.controller');
 var router = express.Router();
 
 
-router.get('/search', controller.search);
-router.get('/search/:course', controller.search);
+router.get('/searchAutoComplete', controller.searchAutoComplete);
+router.get('/searchAutoComplete/:course', controller.searchAutoComplete);
 
 
 module.exports = router;

@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Course = require('./course.model');
 var Subject = require('../subject/subject.model');
 
-exports.search = function(req, res) {
+exports.searchAutoComplete = function(req, res) {
   var search = req.query.course;
 
   function concatSubjectAndCode(course) {
@@ -16,7 +16,10 @@ exports.search = function(req, res) {
 	  						       [
 				                  {subjectCode: {$regex : ".*" + search + ".*", $options : "-i"}},
 				                  {courseNumber: {$regex : ".*" + search + ".*", $options : "-i"}}
-			                 ]})
+			                 ]},
+			          {
+                  subjectCode: 1, courseNumber: 1, _id: 0
+                })
 	  		.sort({ courseNumber: 1 })
 	  		.exec(
 	  			function(err, courses) {
@@ -31,7 +34,10 @@ exports.search = function(req, res) {
 							[
 				                {subjectCode: {$regex : ".*" + words[0] + ".*", $options : "-i"}},
 				                {courseNumber: {$regex : ".*" + words[1] + ".*", $options : "-i"}}
-			                ]})
+			                ]},
+			          {
+                  subjectCode: 1, courseNumber: 1, _id: 0
+                })
 	  		.sort({ courseNumber: 1 })
 	  		.exec(
 	  			function(err, courses) {

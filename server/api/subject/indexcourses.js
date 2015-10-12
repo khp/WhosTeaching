@@ -17,8 +17,129 @@ var request = require('request'),
 var Subject = require('./subject.model');
 var Course = require('../course/course.model');
 var Section = require('../section/section.model');
+var Professor = require('../professor/professor.model');
 
 var $ = cheerio;
+
+exports.getProfsForSections = function() {
+  Section.find({}, function(err, res) {
+    res.forEach(function(e) {
+      getProfForSingleSection(e.subjectCode, e.courseNumber, e.sectionCode);
+    });
+  });
+  getProfForSingleSection('CPSC', '110', '101');
+
+  function getProfForSingleSection(subjectCode, courseNumber, sectionCode) {
+    var url = 'https://courses.students.ubc.ca/cs/main?pname=subjarea&tname=subjareas&req=5&dept=' 
+    + subjectCode + '&course=' + courseNumber + '&section=' + sectionCode;
+    console.log(url);
+    request(url, function (err, res, body) {
+      if(!err) {
+        var $page = cheerio.load(body);
+        var profFullName = $page('.table-striped').next().find('td').slice(1).text().trim();
+        var names = profFullName.split(", ");
+        if (names.length >= 2) {
+          Professor.find({  lastName: names[0],
+                            firstName: names[1] }, function(err, res) {
+                              // if can't find a perfect name match
+                              if (res.length == 0) {
+                                // search again by just last name
+                                Professor.find({ lastName: names[0] },
+                                  function(err, res) {
+                                    // if multiple results, search for the best match by comparing chars in the first name
+                                    if (res.length != 0) {
+                                      var bestMatch = null;
+                                      var bestMatchDiff = 100;
+                                      for (var i = 0; i < res.length; i++) {
+                                        var diff = compareNames(res[i].firstName, names[1]);
+                                        if (diff <= 2 && diff < bestMatchDiff) {
+                                          bestMatch = res[i];
+                                        }
+                                      }
+                                      if (bestMatch != null) {
+                                        Section.update( { subjectCode: subjectCode,
+                                                          courseNumber: courseNumber,
+                                                          sectionCode: sectionCode },
+                                                        { instructor: bestMatch.id,
+                                                          lastName: names[0],
+                                                          firstName: names[1] },
+                                                        function( err, result ) {
+                                                          if (err) {
+                                                            console.log(err);
+                                                          }
+                                                        }
+                                                      );
+                                      } else {
+                                        Section.update( { subjectCode: subjectCode,
+                                                        courseNumber: courseNumber,
+                                                        sectionCode: sectionCode },
+                                          { lastName: names[0],
+                                            firstName: names[1] },
+                                          function( err, result ) {
+                                            if (err) {
+                                              console.log(err);
+                                            } 
+                                  });
+                                      }
+                                    }
+                                  })
+                              } else if (res.length > 0) {
+                                Section.update( { subjectCode: subjectCode,
+                                                  courseNumber: courseNumber,
+                                                  sectionCode: sectionCode },
+                                                { instructor: res[0].id,
+                                                  lastName: names[0],
+                                                  firstName: names[1] },
+                                                function( err, result ) {
+                                                  if (err) {
+                                                    console.log(err);
+                                                  }
+                                });
+                              } else {
+                                Section.update( { subjectCode: subjectCode,
+                                                  courseNumber: courseNumber,
+                                                  sectionCode: sectionCode },
+                                    { lastName: names[0],
+                                      firstName: names[1] },
+                                    function( err, result ) {
+                                      if (err) {
+                                        console.log(err);
+                                      } 
+                                  });
+                            }
+                          }
+                        );
+
+        }
+      }
+    });
+  }
+  function compareNames(name1, name2) {
+    var nameArray1 = [];
+    var nameArray2 = [];
+    for (var i = 0; i < 26; i++) {
+      nameArray1[i] = 0;
+      nameArray2[i] = 0;
+    }
+    var A = "A".charCodeAt();
+    var Z = "Z".charCodeAt();
+    for (var i = 0; i < name1.length; i++) {
+      if (name1.charCodeAt(i) <= Z && name1.charCodeAt(i) >= A)
+        nameArray1[name1.charCodeAt(i) - A]++;
+    }
+    for (var i = 0; i < name2.length; i++) {
+      if (name2.charCodeAt(i) <= Z && name2.charCodeAt(i) >= A)
+        nameArray2[name2.charCodeAt(i) - A]++;
+    }
+    var diff = 0;
+    for (var i = 0; i < 26; i++) {
+      diff += Math.abs(nameArray1[i] - nameArray2[i]);
+    }
+    return diff;
+  }
+}
+
+
 
 exports.getSectionsForCourses = function(subjectCode, courseNumber) {
   var url = 'https://courses.students.ubc.ca/cs/main?pname=subjarea&tname=subjareas&req=3&dept=' + subjectCode + "&course=" + courseNumber;
@@ -78,27 +199,7 @@ exports.getSectionsForCourses = function(subjectCode, courseNumber) {
                           }
                       });
   }
-  }
-
-
-//   STT
-// CPSC 110 V2C
-// Laboratory
-// 2
-
-// Fri
-// 15:00
-// 18:00
-// Section Comments  This section is available only to students registered in Vantage College.
-// STT
-// CPSC 110 V2D
-// Laboratory
-// 2
-
-// Fri
-// 15:00
-// 18:00
-// Section Comments  This sect
+}
 
 exports.getCoursesForSubject = function(subjectCode) {
   var url = 'https://courses.students.ubc.ca/cs/main?pname=subjarea&tname=subjareas&req=1&dept=' + subjectCode;

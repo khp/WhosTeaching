@@ -9,24 +9,28 @@ header#banner.hero-unit
   //- pre Model: {{asyncSelected | json}}
   div.spacer
   div.form-horizontal
-    div.form-group
-      label.col-sm-2.control-label(for='courseSearch') Search:
+    form.form-group(name="search" ng-submit="sendQuery(asyncSelected)")
+      label.col-sm-2.control-label(for='courseSearch') Enter course code here:
       div.col-xs-4
-        input.form-control(type="text" id='courseSearch' ng-model="asyncSelected" placeholer="locations loaded via $http" typeahead="address for address in getCourses($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults")
-  i(ng-show="loadingLocations" class="glyphicon glyphicon-refresh")
-  div(ng-show="noResults")
-    i(class="glyphicon glyphicon-remove")
-    | No Results Found
+        input.form-control(type="text" id='courseSearch' ng-model="asyncSelected" placeholer="locations loaded via $http" typeahead="address for address in getCourses($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults" placeholder="e.g. CPSC 121")
+      button(class='btn btn-default' type='submit') Search
+  //- i(ng-show="loadingLocations" class="glyphicon glyphicon-refresh")
+  //- div(ng-show="noResults")
+  //-   i(class="glyphicon glyphicon-remove")
+  //-   | No Results Found
+
 
   .container
     table.table
       tr 
-        td Course Code
-        td Course Title
+        td Course
+        td Section
+        td Start
+        td End
         td Professor
         td Rating
-      tr(ng-repeat='subject in subjects')
-        td {{subject}}
+      tr(ng-repeat='section in sections')
+        td {{section}}
     .nav.nav-tabs.nav-stacked.col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in awesomeThings')
           li
             a(href='#', tooltip='{{thing.info}}')

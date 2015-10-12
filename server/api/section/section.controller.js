@@ -57,3 +57,26 @@ exports.destroy = function(req, res) {
 function handleError(res, err) {
   return res.status(500).send(err);
 }
+
+exports.search = function(req, res) {
+  var search = req.query.course;
+
+  function concatSubjectAndCode(course) {
+    return course['subjectCode'] + ' ' + course['courseNumber'];
+  };
+  var searchTerms = search.split(" ");
+    Section.find( {
+                    subjectCode: searchTerms[0],
+                    courseNumber: searchTerms[1]
+                  })
+      .sort({ sectionCode: 1 })
+      .exec(
+        function(err, sections) {
+          if(err) {
+            return handleError(res, err);
+          }
+          var returnArray = sections;
+          return res.status(200).json(returnArray);
+        });
+  
+};

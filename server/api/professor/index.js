@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./section.controller');
+var controller = require('./professor.controller');
 
 var router = express.Router();
 
@@ -11,7 +11,6 @@ router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
-router.get('/search', controller.search);
-router.get('/search/:course', controller.search);
+router.post('/getAllProfessors', controller.getAllProfessors);
 
 module.exports = router;

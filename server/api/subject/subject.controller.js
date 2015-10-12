@@ -14,6 +14,7 @@ exports.getSubjects = function(req, res) {
   indexCourses.getSubjects();
   return res.status(202).send();
 };
+
 exports.getCourses = function(req, res) {
   indexCourses.getCoursesForSubject('CPSC');
   return res.status(202).send();
@@ -33,7 +34,10 @@ exports.updateSectionsWithProfs = function(req, res) {
   indexCourses.updateAllSectionsWithProfs();
   return res.status(202).send();
 }
-
+exports.getProfsForSections = function(req, res) {
+  indexCourses.getProfsForSections();
+  return res.status(202).send();
+}
 exports.search = function(req, res) {
   var search = req.query.subject;
   console.log(search);
@@ -53,16 +57,6 @@ exports.search = function(req, res) {
     console.log(subjects);
     return res.status(200).json(returnArray);
   });
-
-
-  //Subject.find(function(err, subjects) {
-  //  if(err) {
-  //    return handleError(res, err);
-  //  }
-  //  var returnArray = _.map(subjects, 'subjectTitle');
-  //  console.log(req.query.subject);
-  //  return res.status(200).json(returnArray);
-  //})
 }
 
 // Get list of subjects

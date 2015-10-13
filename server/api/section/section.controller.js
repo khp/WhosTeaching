@@ -55,6 +55,8 @@ exports.destroy = function(req, res) {
 };
 
 function handleError(res, err) {
+  console.log(res)
+  console.log(err)
   return res.status(500).send(err);
 }
 
@@ -68,7 +70,12 @@ exports.search = function(req, res) {
     Section.find( {
                     subjectCode: searchTerms[0],
                     courseNumber: searchTerms[1]
+                  }, 
+                  {
+                    year: 1, session: 1, term: 1, subjectCode: 1, courseNumber: 1, sectionCode: 1, days: 1, 
+                    firstName: 1, lastName: 1, instructor: 1, startTime: 1, endTime: 1, _id: 0
                   })
+      .populate('instructor')
       .sort({ sectionCode: 1 })
       .exec(
         function(err, sections) {

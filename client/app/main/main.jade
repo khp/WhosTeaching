@@ -30,7 +30,12 @@ header#banner.hero-unit
         td Professor
         td Rating
       tr(ng-repeat='section in sections')
-        td {{section}}
+        td {{section.subjectCode + " " + section.courseNumber}}
+        td {{section.sectionCode}}
+        td {{section.startTime}}
+        td {{section.endTime}}
+        td {{instructorName(section)}}
+        td {{instructorRating(section)}}
     .nav.nav-tabs.nav-stacked.col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in awesomeThings')
           li
             a(href='#', tooltip='{{thing.info}}')

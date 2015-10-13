@@ -12,7 +12,7 @@ var SectionSchema = new Schema({
   courseNumber: { type: String, required: true},
   courseName: { type: String },
   sectionCode: { type: String, required: true},
-  instructor: { type: Schema.Types.ObjectId },
+  instructor: { type: Schema.Types.ObjectId, ref: 'Professor' },
   firstName: { type: String },
   lastName: { type: String },
   days: { type: String },

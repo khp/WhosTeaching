@@ -62,7 +62,7 @@ angular.module('whosTeachingAtUbcApp')
     };
 
     $scope.getCourses = function(val) {
-      if (val != null && val.length > 1) {
+      if (val !== undefined && val.length > 1) {
         return $http.get('/api/courses/searchAutoComplete'
           , {
             params: {
@@ -78,7 +78,7 @@ angular.module('whosTeachingAtUbcApp')
     };
 
     $scope.sendQuery = function(val) {
-      if (val != null && val.length > 1) {
+      if (val !== undefined && val.length > 2) {
         return $http.get('/api/sections/search'
           , {
             params: {
@@ -91,5 +91,39 @@ angular.module('whosTeachingAtUbcApp')
               return response.data;
           });
         }
+    }
+    $scope.instructorName = function (section) {
+      var firstName;
+      var lastName;
+      if (section.instructor == null && section.firstName == null && section.lastName == null) {
+        return "";
+      }
+      if (section.instructor != null) {
+        lastName = section.instructor.lastName;
+        firstName = section.instructor.firstName;
+      } else {
+        lastName = section.lastName;
+        firstName = section.firstName;
+      }
+      firstName = firstName.split(/[^A-Za-z]/);
+      lastName = lastName.split(/[^A-Za-z]/);
+      firstName = $.map(firstName, function(str) {
+        if (str.length > 1) {
+          return str.charAt(0) + str.toLowerCase().slice(1);
+        }
+      });
+      lastName = $.map(lastName, function(str) {
+        if (str.length > 1) {
+          return str.charAt(0) + str.toLowerCase().slice(1);
+        }
+      });
+      return lastName.join(" ") + ", " + firstName.join(" ");
+
+      
+    }
+    $scope.instructorRating = function (section) {
+      if (section.instructor != null) {
+        return section.instructor.overallRating;
+      }
     }
   });

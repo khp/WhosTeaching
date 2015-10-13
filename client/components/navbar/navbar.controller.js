@@ -2,13 +2,14 @@
 
 angular.module('whosTeachingAtUbcApp')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
-    $scope.menu = [{
-      'title': 'Home',
-      'link': '/'
-    },
+    $scope.menu = [
+      {
+        'title': 'Home',
+        'link': '/'
+      },
       {
         'title': 'Options',
-        'link': '/options'
+        'link': '/'
       }];
 
     $scope.isCollapsed = true;
